@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 export PATH="$PWD/depot_tools:$PATH"
-node scripts/ldt/pin-brotli.cjs
-(cd skia && python3 tools/git-sync-deps)
+for directory in /canvas /canvas/skia /canvas/skia/third_party/externals/brotli; do
+  git config --global --add safe.directory "$directory"
+done
 test "$(git -C skia/third_party/externals/brotli rev-parse HEAD)" = "3646606894cd8b8c75d79a569b6c95a33c699d63"
 bash scripts/ldt/test-brotli.sh
 export SKIP_SYNC_SK_DEPS=0
