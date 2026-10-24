@@ -58,3 +58,14 @@ actually resolves, and repeats the rendering comparison.
 
 This option preserves other platforms' existing resolution. It does not patch
 those other platforms; each needs its own native rebuild to claim remediation.
+
+## Rust binding compatibility
+
+A floating rebuild selected napi 3.15.0 and napi-derive 3.6.13. Its new
+native borrow checks rejected synchronous SVG image callbacks used by
+the unchanged 0.1.100 wrapper. The fork pins napi 3.8.5 and napi-derive
+3.5.4, the latest releases available when 0.1.100 shipped (April 26, 2026).
+The Cargo lockfile also pins their release-era binding backend and support
+crates. Upstream CI logs have expired, so these versions are reconstructed
+from publication dates, not a recovered original lockfile. Rendering and
+upstream tests must pass before publishing the rebuilt artifact.

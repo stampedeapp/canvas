@@ -66,6 +66,7 @@ jobs:
         with:
           name: patched-canvas-linux-x64-gnu
           path: |
+            dist/*.tar.gz
             dist/*.tgz
             dist/*.json
             dist/Cargo.lock
