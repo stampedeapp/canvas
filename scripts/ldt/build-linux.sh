@@ -4,7 +4,7 @@ export PATH="$PWD/depot_tools:$PATH"
 for directory in /canvas /canvas/skia /canvas/skia/third_party/externals/brotli; do
   git config --global --add safe.directory "$directory"
 done
-test "$(git -C skia/third_party/externals/brotli rev-parse HEAD)" = "3646606894cd8b8c75d79a569b6c95a33c699d63"
+test "$(git -C skia/third_party/externals/brotli rev-parse HEAD)" = "6d03dfbedda1615c4cba1211f8d81735575209c8"
 bash scripts/ldt/test-brotli.sh
 export SKIP_SYNC_SK_DEPS=0
 node scripts/build-skia.js

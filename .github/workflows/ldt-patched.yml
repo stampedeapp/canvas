@@ -21,8 +21,13 @@ jobs:
       - name: Sync pinned Skia sources on host
         run: |
           node scripts/ldt/pin-brotli.cjs
-          cd skia
-          python3 tools/git-sync-deps
+          (cd skia && python3 tools/git-sync-deps)
+          if bash scripts/ldt/test-brotli.sh > /tmp/brotli-before.log 2>&1; then
+            echo "Expected the unpatched decoder to fail the regression" >&2
+            exit 1
+          fi
+          grep -F "tree=0 safe=0: expected BLOCK_SWITCH (-17), got 0" /tmp/brotli-before.log
+          bash scripts/ldt/apply-brotli.sh
       - name: Build all native code from source with patched Brotli
         run: |
           docker run --rm -v "$PWD:/canvas" -w /canvas \
