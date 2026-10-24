@@ -41,6 +41,8 @@ jobs:
           node scripts/ldt/render-smoke.cjs /tmp/canvas-original/node_modules/@napi-rs/canvas > dist/render-original.json
           node scripts/ldt/render-smoke.cjs /tmp/canvas-patched/node_modules/@napi-rs/canvas > dist/render-patched.json
           diff -u dist/render-original.json dist/render-patched.json
+      - name: Download upstream emoji test fixture
+        run: curl --fail --location --retry 3 "https://github.com/PoomSmart/EmojiLibrary/releases/download/0.15.4/AppleColorEmoji%402x.ttf" --output __test__/fonts/AppleColorEmoji@2x.ttf
       - name: Upstream font, drawing, image, and canvas tests
         run: |
           node .yarn/releases/yarn-4.14.1.cjs ava -c 1 \
