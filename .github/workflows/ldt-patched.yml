@@ -33,6 +33,8 @@ jobs:
           docker run --rm -v "$PWD:/canvas" -w /canvas \
             ghcr.io/brooooooklyn/canvas/ubuntu-builder:jammy@sha256:d007b7070106637445907c434b1e7133c1cb78c606b64958161e2813a80c0a6a \
             bash scripts/ldt/build-linux.sh
+      - name: Give the runner ownership of build outputs
+        run: sudo chown -R "$(id -u):$(id -g)" dist
       - name: Compare rendering with unmodified npm release
         run: |
           mkdir -p /tmp/canvas-original /tmp/canvas-patched
