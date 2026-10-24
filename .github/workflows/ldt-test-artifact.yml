@@ -45,7 +45,9 @@ jobs:
       - name: Package and test native-only dependency override
         run: |
           node scripts/ldt/package-platform.cjs
-          node scripts/ldt/test-platform.cjs
+          node scripts/ldt/test-platform.cjs npm
+          npm install --prefix /tmp/ldt-yarn --ignore-scripts @yarnpkg/cli-dist@4.12.0
+          LDT_YARN_CLI=/tmp/ldt-yarn/node_modules/@yarnpkg/cli-dist/bin/yarn.js node scripts/ldt/test-platform.cjs yarn
       - name: Install upstream test dependencies
         run: node .yarn/releases/yarn-4.14.1.cjs install --immutable --mode=skip-build
       - name: Download upstream emoji test fixture
@@ -56,7 +58,8 @@ jobs:
           node scripts/ldt/render-smoke.cjs /tmp/canvas-original/node_modules/@napi-rs/canvas > dist/render-original.json
           node scripts/ldt/render-smoke.cjs dist/package > dist/render-patched.json
           diff -u dist/render-original.json dist/render-patched.json
-          diff -u dist/render-patched.json dist/render-platform-package.json
+          diff -u dist/render-patched.json dist/render-platform-npm.json
+          diff -u dist/render-patched.json dist/render-platform-yarn.json
       - name: Upstream rendering regression suites
         run: |
           docker run --rm -v "$PWD:/canvas" -w /canvas node:24.22.1-bookworm \
