@@ -22,12 +22,12 @@ const provenance = {
   decoderSourceSha256: createHash('sha256').update(readFileSync('skia/third_party/externals/brotli/c/dec/decode.c')).digest('hex'),
   decoderHeaderSha256: createHash('sha256').update(readFileSync('skia/third_party/externals/brotli/c/include/brotli/decode.h')).digest('hex'),
   brotliCommit: execFileSync('git', ['-C', 'skia/third_party/externals/brotli', 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  compiledDecoderObject: readFileSync('dist/compiled-brotli-object.sha256', 'utf8').trim(),
   binarySha256: createHash('sha256').update(readFileSync(binary)).digest('hex'),
 }
 if (provenance.brotliCommit !== '6d03dfbedda1615c4cba1211f8d81735575209c8') throw new Error('Wrong Brotli source')
 if (provenance.decoderSourceSha256 !== '80ed02b1ceac94a3110872b522c9943c00f10b02763a688d11ec6cf4c6256ef5') throw new Error('Wrong patched decoder source')
 if (provenance.decoderHeaderSha256 !== 'bf1d06a63b3c2e834b3f36d51b86584e11873568d3d514c9a2269c81ea1705a7') throw new Error('Wrong patched decoder header')
-if (!readFileSync(binary).includes(Buffer.from('BLOCK_SWITCH'))) throw new Error('Patched decoder error string absent from addon')
 writeFileSync('dist/package/BUILD-PROVENANCE.json', JSON.stringify(provenance, null, 2) + '\n')
 writeFileSync('dist/BUILD-PROVENANCE.json', JSON.stringify(provenance, null, 2) + '\n')
 execFileSync('npm', ['pack', './dist/package', '--pack-destination', 'dist', '--ignore-scripts'], { stdio: 'inherit' })

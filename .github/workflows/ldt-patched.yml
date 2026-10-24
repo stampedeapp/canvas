@@ -68,4 +68,7 @@ jobs:
             dist/*.json
             dist/Cargo.lock
             dist/SHA256SUMS
+            dist/package/
+            dist/*.txt
+            dist/*.sha256
           if-no-files-found: error

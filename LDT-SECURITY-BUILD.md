@@ -21,7 +21,11 @@ Instead, the build applies only the upstream decoder security changes:
 The `LDT patched canvas` workflow builds Skia and the addon from source.
 It does not download upstream precompiled Skia libraries. The builder image
 is pinned by digest. It records the source commits, Cargo dependency lockfile,
-and final binary checksum. The final addon must contain the new decoder error.
+and final binary checksum. It links and runs a test against the compiled Brotli archive to verify the new
+error code, compares that decoder object with the copy embedded in Skia, and
+records the final addon link map. The unused decoder error-string function is
+removed from the final addon by dead-code elimination, so scanning the addon
+for the `BLOCK_SWITCH` text is not a valid verification check.
 
 A safe C regression test constructs invalid block-switch states directly,
 without decoding an exploit payload. It fails on original Brotli and passes
