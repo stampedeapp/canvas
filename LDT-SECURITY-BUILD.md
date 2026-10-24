@@ -42,3 +42,15 @@ A public npm registry or private npm registry is not required.
 
 No application repositories are changed by this build. Updating a Node.js
 runtime does not replace the compiled Brotli decoder inside this addon.
+
+## Native-only dependency override
+
+The artifact test workflow also packages the same verified binary as
+`@napi-rs/canvas-linux-x64-gnu@0.1.100-ldt.1`. This tarball can replace only
+that platform dependency while retaining the original `@napi-rs/canvas`
+JavaScript wrapper. The integration test installs the original wrapper from
+npm, overrides its Linux x64 native dependency, verifies which binary it
+actually resolves, and repeats the rendering comparison.
+
+This option preserves other platforms' existing resolution. It does not patch
+those other platforms; each needs its own native rebuild to claim remediation.
