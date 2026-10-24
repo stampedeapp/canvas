@@ -16,9 +16,10 @@ fs.writeFileSync(path.join(workspace, 'package.json'), JSON.stringify({
     : { overrides: { '@napi-rs/canvas-linux-x64-gnu': `file:${tarball}` } }),
 }))
 if (manager === 'yarn') {
-  fs.writeFileSync(path.join(workspace, '.yarnrc.yml'), 'nodeLinker: node-modules\nenableScripts: false\n')
+  fs.writeFileSync(path.join(workspace, '.yarnrc.yml'), 'nodeLinker: node-modules\nenableScripts: false\nenableImmutableInstalls: false\n')
   if (!process.env.LDT_YARN_CLI) throw new Error('LDT_YARN_CLI must identify Yarn 4.12.0')
   execFileSync(process.execPath, [process.env.LDT_YARN_CLI, 'install'], { cwd: workspace, stdio: 'inherit' })
+  execFileSync(process.execPath, [process.env.LDT_YARN_CLI, 'install', '--immutable'], { cwd: workspace, stdio: 'inherit' })
 } else {
   execFileSync('npm', ['install', '--prefix', workspace, '--ignore-scripts'], { stdio: 'inherit' })
 }
